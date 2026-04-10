@@ -32,6 +32,19 @@ const register = async (req, res) => {
             return res.status(400).json({ message: 'Invalid role. Must be student or staff' });
         }
 
+        // ✅ EMAIL DOMAIN VALIDATION
+        if (role === 'student' && !email.endsWith('@vitapstudent.ac.in')) {
+            return res.status(400).json({
+                message: 'Student email must be @vitapstudent.ac.in'
+            });
+        }
+
+        if (role === 'staff' && !email.endsWith('@vitap.ac.in')) {
+            return res.status(400).json({
+                message: 'Staff email must be @vitap.ac.in'
+            });
+        }
+
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -62,48 +75,45 @@ const register = async (req, res) => {
     }
 };
 
-// Login a user
 const login = async (req, res) => {
     const { email, password, role } = req.body;
 
     try {
-        if (role === 'admin') {
-            // Only allow the admin from .env
-            if (
-                email === process.env.ADMIN_EMAIL &&
-                password === process.env.ADMIN_PASSWORD
-            ) {
-                // You can generate a token for admin (no DB lookup needed)
-                const token = jwt.sign(
-                    { id: 'admin', email, role: 'admin', name: 'Admin' },
-                    process.env.JWT_SECRET,
-                    { expiresIn: '1h' }
-                );
-                return res.status(200).json({
-                    token,
-                    user: { id: 'admin', email, role: 'admin', name: 'Admin' }
-                });
-            } else {
-                return res.status(400).json({ message: 'Invalid admin credentials' });
-            }
+        console.log("Login attempt:", email, role);
+
+        // Find user by email + role
+        const user = await User.findOne({ email, role });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credentials (user not found)' });
         }
 
-        // For non-admin users, proceed as usual
-        const user = await User.findOne({ email, role });
-        if (!user) {
-            return res.status(400).json({ message: 'Email not found' });
-        }
+        // Compare password
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
-            return res.status(400).json({ message: 'Incorrect password' });
+            return res.status(400).json({ message: 'Invalid credentials (wrong password)' });
         }
+
+        // Create token
         const token = jwt.sign(
             { id: user._id, email: user.email, role: user.role, name: user.name },
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET || "secret123",
             { expiresIn: '1h' }
         );
-        res.status(200).json({ token, user: { id: user._id, email: user.email, role: user.role, name: user.name } });
+
+        res.status(200).json({
+            token,
+            user: {
+                id: user._id,
+                email: user.email,
+                role: user.role,
+                name: user.name
+            }
+        });
+
     } catch (error) {
+        console.error("Login error:", error);
         res.status(500).json({ message: 'Server error' });
     }
 };

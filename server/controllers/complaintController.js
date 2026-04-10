@@ -55,11 +55,19 @@ const getAllComplaints = async (req, res) => {
             .populate('raisedBy', 'email name')
             .populate('assignedTo', 'email name department')
             .sort({ date: -1 });
-        // Split and sort
+
         const pending = complaints.filter(c => c.status === 'pending').sort((a, b) => a.dueInDays - b.dueInDays);
         const inProgress = complaints.filter(c => c.status === 'in-progress').sort((a, b) => a.dueInDays - b.dueInDays);
         const resolved = complaints.filter(c => c.status === 'resolved');
-        res.json({ pending, inProgress, resolved });
+
+        // ✅ ADD THIS
+        res.json({
+            all: complaints,      // 🔥 important
+            pending,
+            inProgress,
+            resolved
+        });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -167,10 +175,15 @@ const getAssignedComplaints = async (req, res) => {
 // Staff: Submit update for a complaint (with photo and remarks)
 const staffUpdateComplaint = async (req, res) => {
     try {
-        const { remarks } = req.body;
+        const { remarks,status } = req.body;
         const photoUrl = req.file ? `/uploads/${req.file.filename}` : '';
         const complaint = await Complaint.findById(req.params.id);
         if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
+        
+        // ✅ ADD THIS BLOCK HERE
+        if (status) {
+            complaint.status = status;
+        }
         complaint.staffUpdates.push({ photoUrl, remarks, updatedAt: new Date() });
         complaint.updatedAt = new Date();
         await complaint.save();
@@ -180,6 +193,7 @@ const staffUpdateComplaint = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
+
 };
 
 // Get complaint statistics (public)

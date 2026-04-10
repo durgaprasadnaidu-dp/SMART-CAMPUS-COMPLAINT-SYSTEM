@@ -8,7 +8,7 @@ const feedbackRoutes = require('./routes/feedback');
 const statsRoutes = require('./routes/stats');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5001;
 
 // Middleware
 app.use(cors());

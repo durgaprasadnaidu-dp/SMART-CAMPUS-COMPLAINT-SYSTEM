@@ -13,8 +13,9 @@ const Login = ({ setIsLoggedIn, onLoginSuccess }) => {
         e.preventDefault();
         setError('');
         try {
-            const response = await axios.post('https://campus-complaint-system.onrender.com/api/auth/login', { email, password, role });
-            localStorage.setItem('token', response.data.token);
+            const response = await axios.post('http://localhost:5001/api/auth/login', { email, password, role });
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
             setIsLoggedIn(true);
             if (onLoginSuccess) {
                 onLoginSuccess(response, history);

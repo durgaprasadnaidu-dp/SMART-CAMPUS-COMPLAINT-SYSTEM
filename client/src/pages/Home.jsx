@@ -12,7 +12,7 @@ const Home = ({ userEmail, userRole }) => {
         // Fetch public feedbacks for testimonials
         const fetchFeedbacks = async () => {
             try {
-                const res = await axios.get('https://campus-complaint-system.onrender.com/api/feedback');
+                const res = await axios.get('http://localhost:5001/api/feedback');
                 if (isMounted) setFeedbacks(res.data.slice(-6)); // Show last 6 feedbacks
             } catch (error) {
                 if (isMounted) console.error('Error fetching feedbacks:', error);
@@ -24,8 +24,8 @@ const Home = ({ userEmail, userRole }) => {
             try {
                 console.log('Fetching statistics...');
                 const [complaintsRes, usersRes] = await Promise.all([
-                    axios.get('https://campus-complaint-system.onrender.com/api/stats/complaints'),
-                    axios.get('https://campus-complaint-system.onrender.com/api/stats/users')
+                    axios.get('http://localhost:5001/api/stats/complaints'),
+                    axios.get('http://localhost:5001/api/stats/users')
                 ]);
                 
                 console.log('Complaint stats response:', complaintsRes.data);
@@ -70,7 +70,7 @@ const Home = ({ userEmail, userRole }) => {
                     <div className="row align-items-center">
                         <div className="col-lg-6">
                             <h1 className="display-4 fw-bold mb-4">Smart Campus Complaint System</h1>
-                            <h3 className="mb-4" style={{ color: '#FFD700' }}>Kongu Engineering College</h3>
+                            <h3 className="mb-4" style={{ color: '#FFD700' }}>VIT-AP University</h3>
                             <p className="lead mb-4">Empowering students, staff, and administrators with a transparent and efficient complaint management system. Experience seamless issue resolution and real-time tracking.</p>
                         {!userEmail && (
                                 <div className="d-flex gap-3">
@@ -261,22 +261,47 @@ const Home = ({ userEmail, userRole }) => {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-4 mb-4">
-                            <h5 className="mb-3" style={{ color: '#FFD700' }}>Kongu Engineering College</h5>
+                            <h5 className="mb-3" style={{ color: '#FFD700' }}>VIT-AP University</h5>
                             <p className="mb-3">Empowering students with innovative technology solutions for a better campus experience.</p>
                             <div className="d-flex gap-3">
-                                <button className="btn btn-link text-white p-0 border-0 bg-transparent">
-                                    <i className="fab fa-facebook-f"></i>
-                                </button>
-                                <button className="btn btn-link text-white p-0 border-0 bg-transparent">
-                                    <i className="fab fa-twitter"></i>
-                                </button>
-                                <button className="btn btn-link text-white p-0 border-0 bg-transparent">
-                                    <i className="fab fa-linkedin-in"></i>
-                                </button>
-                                <button className="btn btn-link text-white p-0 border-0 bg-transparent">
-                                    <i className="fab fa-instagram"></i>
-                                </button>
-                            </div>
+
+    <a 
+        href="https://www.facebook.com/vitap.university" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-white"
+    >
+        <i className="fab fa-facebook-f"></i>
+    </a>
+
+    <a 
+        href="https://x.com/VITAPuniversity" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-white"
+    >
+        <i className="fab fa-twitter"></i>
+    </a>
+
+    <a 
+        href="https://www.linkedin.com/school/vitap-university/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-white"
+    >
+        <i className="fab fa-linkedin-in"></i>
+    </a>
+
+    <a 
+        href="https://www.instagram.com/vitap.university/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="text-white"
+    >
+        <i className="fab fa-instagram"></i>
+    </a>
+
+    </div>
                         </div>
                         <div className="col-lg-2 col-md-6 mb-4">
                             <h6 className="mb-3" style={{ color: '#FFD700' }}>Quick Links</h6>
@@ -298,15 +323,17 @@ const Home = ({ userEmail, userRole }) => {
                         </div>
                         <div className="col-lg-3 mb-4">
                             <h6 className="mb-3" style={{ color: '#FFD700' }}>Contact Info</h6>
-                            <p className="mb-2"><i className="fas fa-map-marker-alt me-2"></i>Perundurai, Erode, Tamil Nadu</p>
-                            <p className="mb-2"><i className="fas fa-phone me-2"></i>+91 4294 226565</p>
-                            <p className="mb-2"><i className="fas fa-envelope me-2"></i>info@kongu.ac.in</p>
+                            <p className="mb-2"><i className="fas fa-map-marker-alt me-2"></i>Amaravati,Andhra Pradesh</p>
+                            <p className="mb-2"><i className="fas fa-phone me-2"></i>+91 0863 237 0444</p>
+                            <p className="mb-2"><i className="fas fa-envelope me-2"></i>info@vitap.ac.in</p>
+                            <p className="mb-2">©rakesh.23bce8706@vitapstudent.ac.in</p>
+                            <p className="mb-2">©durga.23bce8453@vitapstudent.ac.in</p>
                         </div>
                     </div>
                     <hr className="my-4" />
                     <div className="row align-items-center">
                         <div className="col-md-6">
-                            <p className="mb-0">&copy; 2025 Kongu Engineering College. All rights reserved.</p>
+                            <p className="mb-0">&copy; 2025 VIT-AP University. All rights reserved.</p>
                         </div>
                         <div className="col-md-6 text-md-end">
                             <p className="mb-0">Smart Campus Complaint System v1.0</p>

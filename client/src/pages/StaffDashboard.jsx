@@ -9,6 +9,7 @@ const statusColors = {
 
 const StaffDashboard = () => {
     const [complaints, setComplaints] = useState([]);
+    const [status, setStatus] = useState('in-progress');
     const [selectedComplaint, setSelectedComplaint] = useState(null);
     const [remarks, setRemarks] = useState('');
     const [photo, setPhoto] = useState(null);
@@ -24,7 +25,7 @@ const StaffDashboard = () => {
     const fetchAssignedComplaints = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('https://campus-complaint-system.onrender.com/api/complaints/assigned', {
+            const res = await axios.get('http://localhost:5001/api/complaints/assigned', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setComplaints(res.data);
@@ -43,7 +44,7 @@ const StaffDashboard = () => {
 
     const fetchProfile = async () => {
         try {
-            const res = await axios.get('https://campus-complaint-system.onrender.com/api/auth/profile', {
+            const res = await axios.get('http://localhost:5001/api/auth/profile', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setUserInfo(res.data);
@@ -74,10 +75,14 @@ const StaffDashboard = () => {
         try {
         const formData = new FormData();
         formData.append('remarks', remarks);
+        formData.append('status', status); 
         if (photo) formData.append('photo', photo);
         await submitStaffUpdate(selectedComplaint, formData);
+        // ✅ ADD THESE LINES
+        await fetchAssignedComplaints(); 
         setSelectedComplaint(null);
         setRefresh(r => !r);
+
         } catch (error) {
             console.error('Error updating complaint:', error);
         }
@@ -85,7 +90,7 @@ const StaffDashboard = () => {
 
     const submitStaffUpdate = async (selectedComplaint, formData) => {
         try {
-            await axios.post(`https://campus-complaint-system.onrender.com/api/complaints/${selectedComplaint._id}/staff-update`, formData, {
+            await axios.post(`http://localhost:5001/api/complaints/${selectedComplaint._id}/staff-update`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -399,6 +404,22 @@ const StaffDashboard = () => {
                                             required
                                         />
                                     </div>
+                                                                                {/* ✅ NEW STATUS DROPDOWN */}
+                                            <div className="mb-3">
+                                                <label className="form-label fw-bold">
+                                                    Update Status
+                                                </label>
+                                                <select
+                                                    className="form-select"
+                                                    value={status}
+                                                    onChange={(e) => setStatus(e.target.value)}
+                                                >
+                                                    <option value="pending">Pending</option>
+                                                    <option value="in-progress">In Progress</option>
+                                                    <option value="resolved">Resolved</option>
+                                                </select>
+                                            </div>
+
                                     <div className="mb-3">
                                                 <label className="form-label fw-bold">Progress Photo (optional)</label>
                                                 <input 
