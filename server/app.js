@@ -10,6 +10,7 @@ const statsRoutes = require('./routes/stats');
 const app = express();
 const PORT = 5001;
 
+
 // Middleware
 app.use(cors());
 app.use(express.json());
