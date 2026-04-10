@@ -36,7 +36,7 @@ const ComplaintForm = () => {
 
             // ✅ API CALL WITH TOKEN
             await axios.post(
-                'http://localhost:5001/api/complaints',
+                'https://smart-campus-complaint-system-7efu.onrender.com',
                 formData,
                 {
                     headers: {

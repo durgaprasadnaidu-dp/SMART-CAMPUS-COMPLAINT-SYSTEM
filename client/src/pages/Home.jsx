@@ -12,7 +12,7 @@ const Home = ({ userEmail, userRole }) => {
         // Fetch public feedbacks for testimonials
         const fetchFeedbacks = async () => {
             try {
-                const res = await axios.get('http://smart-campus-complaint-system-7efu.onrender.com/api/feedback');
+                const res = await axios.get('https://smart-campus-complaint-system-7efu.onrender.com/api/feedback');
                 if (isMounted) setFeedbacks(res.data.slice(-6)); // Show last 6 feedbacks
             } catch (error) {
                 if (isMounted) console.error('Error fetching feedbacks:', error);
@@ -24,8 +24,8 @@ const Home = ({ userEmail, userRole }) => {
             try {
                 console.log('Fetching statistics...');
                 const [complaintsRes, usersRes] = await Promise.all([
-                    axios.get('http://smart-campus-complaint-system-7efu.onrender.com/api/stats/complaints'),
-                    axios.get('http://smart-campus-complaint-system-7efu.onrender.com/api/stats/users')
+                    axios.get('https://smart-campus-complaint-system-7efu.onrender.com/api/stats/complaints'),
+                    axios.get('https://smart-campus-complaint-system-7efu.onrender.com/api/stats/users')
                 ]);
                 
                 console.log('Complaint stats response:', complaintsRes.data);
@@ -266,7 +266,7 @@ const Home = ({ userEmail, userRole }) => {
                             <div className="d-flex gap-3">
 
     <a 
-        href="https://www.facebook.com/vitap.university" 
+        href="httpss://www.facebook.com/vitap.university" 
         target="_blank" 
         rel="noopener noreferrer"
         className="text-white"
@@ -275,7 +275,7 @@ const Home = ({ userEmail, userRole }) => {
     </a>
 
     <a 
-        href="https://x.com/VITAPuniversity" 
+        href="httpss://x.com/VITAPuniversity" 
         target="_blank" 
         rel="noopener noreferrer"
         className="text-white"
@@ -284,7 +284,7 @@ const Home = ({ userEmail, userRole }) => {
     </a>
 
     <a 
-        href="https://www.linkedin.com/school/vitap-university/" 
+        href="httpss://www.linkedin.com/school/vitap-university/" 
         target="_blank" 
         rel="noopener noreferrer"
         className="text-white"
@@ -293,7 +293,7 @@ const Home = ({ userEmail, userRole }) => {
     </a>
 
     <a 
-        href="https://www.instagram.com/vitap.university/" 
+        href="httpss://www.instagram.com/vitap.university/" 
         target="_blank" 
         rel="noopener noreferrer"
         className="text-white"

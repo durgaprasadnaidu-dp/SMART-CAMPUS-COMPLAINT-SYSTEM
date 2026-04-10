@@ -25,7 +25,7 @@ const Register = () => {
         
         try {
             // 1. Register the user
-            await axios.post('http://smart-campus-complaint-system-7efu.onrender.com/api/auth/register', { 
+            await axios.post('https://smart-campus-complaint-system-7efu.onrender.com/api/auth/register', { 
                 email: email.trim(), 
                 password, 
                 name: name.trim(), 
