@@ -17,7 +17,6 @@ const Login = ({ setIsLoggedIn, onLoginSuccess }) => {
             
 
             const response = await axios.post('https://smart-campus-complaint-system-7efu.onrender.com/api/auth/login', { email, password, role });
- d982f61 (fixed API URLs (https + removed localhost))
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user", JSON.stringify(response.data.user));
             setIsLoggedIn(true);
