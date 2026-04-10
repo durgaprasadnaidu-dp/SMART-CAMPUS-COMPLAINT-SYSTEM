@@ -30,7 +30,7 @@ const AdminDashboard = () => {
   // ✅ Fetch complaints
   const fetchComplaints = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/api/complaints', {
+      const res = await axios.get('http://smart-campus-complaint-system-7efu.onrender.com/api/complaints', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
 
@@ -48,7 +48,7 @@ const AdminDashboard = () => {
   // ✅ Fetch staff
   const fetchStaff = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/api/auth/staff', {
+      const res = await axios.get('http://smart-campus-complaint-system-7efu.onrender.com/api/auth/staff', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setStaffList(res.data);
@@ -63,7 +63,7 @@ const AdminDashboard = () => {
 
     try {
       await axios.put(
-        `http://localhost:5001/api/complaints/${complaintId}/assign`,
+        `http://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${complaintId}/assign`,
         { staffId },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
   // ✅ Update (status + assign)
   const handleStatusUpdate = async (id) => {
     await axios.put(
-      `http://localhost:5001/api/complaints/${id}/status`,
+      `http://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${id}/status`,
       {
         status: statusEdit[id],
         resolutionNotes: notesEdit[id],
