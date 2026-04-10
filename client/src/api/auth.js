@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'https://campus-complaint-system.onrender.com/api/auth/';
+const API_URL = 'https://smart-campus-complaint-system-7efu.onrender.com';
 
 // Register user
 const register = async (userData) => {
