@@ -18,6 +18,7 @@ const MyComplaints = () => {
     const [sortBy, setSortBy] = useState('date');
     const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
+    // eslint-disable-next-line
     const [error, setError] = useState(null);
     const history = useHistory();
 

@@ -6,6 +6,7 @@ const ComplaintDetail = () => {
     const { id } = useParams();
     const [complaint, setComplaint] = useState(null);
     const [loading, setLoading] = useState(true);
+    // eslint-disable-next-line
     const [error, setError] = useState(null);
 
     useEffect(() => {
