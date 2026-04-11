@@ -130,27 +130,37 @@ const updateComplaintStatus = async (req, res) => {
 
     try {
         const complaint = await Complaint.findById(req.params.id).populate('raisedBy');
+
         if (!complaint) {
             return res.status(404).json({ message: 'Complaint not found' });
         }
 
-        // Only send email if status is being set to "resolved" and raisedBy exists
-        if (status === 'resolved' && complaint.raisedBy && complaint.raisedBy.email) {
+        // ✅ UPDATE STATUS
+        complaint.status = status;
+        complaint.resolutionNotes = resolutionNotes || complaint.resolutionNotes;
+        complaint.updatedAt = Date.now();
+
+        await complaint.save();
+
+        // ✅ SEND EMAIL AFTER SAVE (clean flow)
+        if (status === 'resolved' && complaint.raisedBy?.email) {
             try {
-                await sendResolutionEmail(complaint.raisedBy.email, 'Your complaint has been resolved', `Hello ${complaint.raisedBy.name},\n\nYour complaint titled "${complaint.title}" has been resolved.\n\nThank you.`);
-                console.log(`Resolution email sent to ${complaint.raisedBy.email}`);
+                await sendResolutionEmail(
+                    complaint.raisedBy.email,
+                    'Your complaint has been resolved',
+                    `Hello ${complaint.raisedBy.name},\n\nYour complaint titled "${complaint.title}" has been resolved.\n\nThank you.`
+                );
             } catch (mailError) {
-                console.error('Error sending resolution email:', mailError);
-                // Optionally, don't fail the whole request if email fails
+                console.error('Email error:', mailError);
             }
         }
 
-        complaint.status = status;
-        complaint.resolutionNotes = resolutionNotes;
-        complaint.updatedAt = Date.now();
-        await complaint.save();
+        // 🔥 VERY IMPORTANT CHANGE
+        res.json({
+            message: 'Complaint status updated successfully',
+            complaint   // ✅ RETURN UPDATED DATA
+        });
 
-        res.json({ message: 'Complaint status updated successfully.' });
     } catch (error) {
         console.error('Error in updateComplaintStatus:', error);
         res.status(500).json({ message: 'Server error', error: error.message });

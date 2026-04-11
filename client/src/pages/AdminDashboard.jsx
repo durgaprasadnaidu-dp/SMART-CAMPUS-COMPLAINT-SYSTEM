@@ -63,11 +63,13 @@ const AdminDashboard = () => {
 
     try {
       await axios.put(
-        `https://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${complaintId}/assign`,
-        { staffId },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      `https://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${id}/status`,
+      { status },
+      {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
         }
+      }
       );
 
       fetchComplaints();
@@ -87,21 +89,24 @@ const AdminDashboard = () => {
   };
 
   // ✅ Update (status + assign)
-  const handleStatusUpdate = async (id) => {
-    await axios.put(
-      `https://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${id}/status`,
-      {
-        status: statusEdit[id],
-        resolutionNotes: notesEdit[id],
-        assignedTo: selectedAssign[id]
-      },
-      {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      }
-    );
+  const handleStatusUpdate = async (id, status) => {
+    try {
+        await axios.put(
+            `https://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${id}/status`,
+            { status },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+        );
 
-    fetchComplaints();
-  };
+        fetchComplaints();  // 🔥 THIS IS THE FIX
+
+    } catch (error) {
+        console.error(error);
+    }
+    };
 
   // ✅ Show only pending + in-progress
   const allActiveComplaints = [

@@ -29,7 +29,7 @@ router.post('/:id/staff-update', authMiddleware, isStaff, upload.single('photo')
 
 // Admin routes (moved to end to avoid conflicts)
 router.put('/:id/assign', authMiddleware, isAdmin, assignComplaint);
-router.put('/:id/status', authMiddleware, isAdmin, updateComplaintStatus);
+router.put('/:id/status', authMiddleware, updateComplaintStatus);
 router.get('/', authMiddleware, (req, res, next) => {
     console.log("USER DATA:", req.user); // 🔥 ADD THIS
     next();
