@@ -28,11 +28,13 @@ const createComplaint = async (req, res) => {
 // Get all complaints for the logged-in user
 const getMyComplaints = async (req, res) => {
     try {
-        const complaints = await Complaint.find({ raisedBy: req.user.id }).sort({ date: -1 });
+        const complaints = await Complaint.find({
+            raisedBy: req.user.id
+        }).sort({ createdAt: -1 });
+
         res.json(complaints);
     } catch (error) {
-        console.error(error); // This will print the real error in your backend terminal
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: "Error fetching complaints" });
     }
 };
 
