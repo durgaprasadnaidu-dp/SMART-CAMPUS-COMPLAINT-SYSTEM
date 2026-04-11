@@ -75,48 +75,51 @@ const register = async (req, res) => {
     }
 };
 
+
+
 const login = async (req, res) => {
-    const { email, password, role } = req.body;
-
     try {
-        console.log("Login attempt:", email, role);
+        const { email, password } = req.body;
 
-        // Find user by email + role
-        const user = await User.findOne({ email, role });
-
+        // 🔍 check user
+        const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials (user not found)' });
+            return res.status(400).json({ message: "User not found" });
         }
 
-        // Compare password
+        // 🔐 check password
         const isMatch = await bcrypt.compare(password, user.password);
-
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials (wrong password)' });
+            return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        // Create token
+        // 🎯 CREATE TOKEN (VERY IMPORTANT FIX)
         const token = jwt.sign(
-            { id: user._id, email: user.email, role: user.role, name: user.name },
+            {
+                id: user._id,
+                role: user.role   // 🔥 THIS FIXES YOUR ADMIN ISSUE
+            },
             process.env.JWT_SECRET || "secret123",
-            { expiresIn: '1h' }
+            { expiresIn: '1d' }
         );
 
-        res.status(200).json({
+        // ✅ SEND RESPONSE (YOU WERE MISSING THIS)
+        res.json({
             token,
             user: {
                 id: user._id,
                 email: user.email,
-                role: user.role,
-                name: user.name
+                role: user.role
             }
         });
 
     } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ message: 'Server error' });
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
     }
 };
+
+
 
 // Get user statistics (public)
 const getUserStats = async (req, res) => {

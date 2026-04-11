@@ -13,7 +13,8 @@ module.exports = function (req, res, next) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret123");
 
         req.user = {
-        id: decoded.id || decoded._id
+        id: decoded.id || decoded._id,
+        role: decoded.role   // 🔥 ADD THIS
         };
 
         next();
