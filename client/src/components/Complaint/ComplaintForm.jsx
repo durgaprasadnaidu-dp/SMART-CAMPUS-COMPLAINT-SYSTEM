@@ -36,14 +36,15 @@ const ComplaintForm = () => {
 
             // ✅ API CALL WITH TOKEN
             await axios.post(
-                'https://smart-campus-complaint-system-7efu.onrender.com',
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
+  'https://smart-campus-complaint-system-7efu.onrender.com/api/complaints',
+  formData,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data"
+    }
+  }
+);
 
             // ✅ SUCCESS
             setSuccess('Complaint submitted successfully!');
