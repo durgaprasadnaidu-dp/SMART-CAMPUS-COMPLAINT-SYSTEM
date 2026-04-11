@@ -37,7 +37,7 @@ const StaffDashboard = () => {
             setLoading(false);
         }
     };
-
+    // eslint-disable-next-line
     useEffect(() => {
         fetchAssignedComplaints();
         fetchProfile();

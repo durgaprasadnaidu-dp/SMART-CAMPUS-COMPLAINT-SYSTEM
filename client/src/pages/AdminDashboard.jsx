@@ -58,25 +58,24 @@ const AdminDashboard = () => {
   };
 
   // ✅ Assign staff
-  const handleAssign = async (complaintId, staffId) => {
-    if (!staffId) return alert("Select staff");
-
+  const handleStatusUpdate = async (id, newStatus) => {
     try {
-      await axios.put(
-      `https://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${id}/status`,
-      { status },
-      {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
-      }
-      );
+        await axios.put(
+            `https://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${id}/status`,
+            { status: newStatus },   // ✅ FIXED
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+        );
 
-      fetchComplaints();
-    } catch {
-      alert("Assign failed");
+        fetchComplaints();
+
+    } catch (error) {
+        console.error(error);
     }
-  };
+};
 
   // ✅ Status change
   const handleStatusChange = (id, status) => {
@@ -88,25 +87,6 @@ const AdminDashboard = () => {
     setNotesEdit(prev => ({ ...prev, [id]: notes }));
   };
 
-  // ✅ Update (status + assign)
-  const handleStatusUpdate = async (id, status) => {
-    try {
-        await axios.put(
-            `https://smart-campus-complaint-system-7efu.onrender.com/api/complaints/${id}/status`,
-            { status },
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-            }
-        );
-
-        fetchComplaints();  // 🔥 THIS IS THE FIX
-
-    } catch (error) {
-        console.error(error);
-    }
-    };
 
   // ✅ Show only pending + in-progress
   const allActiveComplaints = [
@@ -214,7 +194,7 @@ const AdminDashboard = () => {
 
                 <button
                   className="btn btn-primary btn-sm mt-2"
-                  onClick={() => handleAssign(c._id, selectedAssign[c._id])}
+                  onClick={() => handleStatusUpdate(c._id, "resolved")}
                   disabled={!selectedAssign[c._id]}
                 >
                   Assign
@@ -235,10 +215,9 @@ const AdminDashboard = () => {
 
                 <button
                   className="btn btn-success btn-sm mt-1"
-                  onClick={() => handleStatusUpdate(c._id)}
-                >
-                  Update
-                </button>
+                  onClick={() => handleStatusUpdate(c._id, "resolved")}
+                >Mark Resolved </button>
+                
               </td>
 
               {/* Notes */}
