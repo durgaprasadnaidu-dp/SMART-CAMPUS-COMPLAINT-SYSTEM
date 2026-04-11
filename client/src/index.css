@@ -9,7 +9,20 @@
   --light-bg: #f8f9fa;
   --card-shadow: 0 4px 24px rgba(30,60,114,0.08);
   --border-radius: 1rem;
-  --font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  --font-family: 'Playfair Display', serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 /* General Reset and Base Styles */
