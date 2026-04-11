@@ -28,9 +28,10 @@ const createComplaint = async (req, res) => {
 // Get all complaints for the logged-in user
 const getMyComplaints = async (req, res) => {
     try {
+        console.log("TOKEN USER:", req.user.id);
         const complaints = await Complaint.find({
-            raisedBy: req.user.id
-        }).sort({ createdAt: -1 });
+        raisedBy: req.user.id
+        });
 
         res.json(complaints);
     } catch (error) {
